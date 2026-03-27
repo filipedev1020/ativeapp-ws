@@ -27,7 +27,7 @@ export async function wsRoute(app: FastifyInstance) {
 
     socket.send(JSON.stringify({ id: user.id, type: "connected", data: { userId: user.id } }))
 
-    socket.on("message", (raw: import("ws").RawData) => {
+    socket.on("message", (raw: any) => {
       // ping/pong ou futuro: client pode mandar mensagens
       const msg = raw.toString()
       if (msg === "ping") {
