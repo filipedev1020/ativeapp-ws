@@ -23,9 +23,11 @@ export async function wsRoute(app: FastifyInstance) {
       return
     }
 
-    addClient(user.id, socket)
+    const user_id = user.sub as string
 
-    socket.send(JSON.stringify({ id: user.id, type: "connected", data: { userId: user.id } }))
+    addClient(user_id, socket)
+
+    socket.send(JSON.stringify({ id: user_id, type: "connected", data: { userId: user_id } }))
 
     socket.on("message", (raw: any) => {
       // ping/pong ou futuro: client pode mandar mensagens
@@ -36,7 +38,7 @@ export async function wsRoute(app: FastifyInstance) {
     })
 
     socket.on("close", () => {
-      removeClient(user.id, socket)
+      removeClient(user_id, socket)
     })
   })
 }
