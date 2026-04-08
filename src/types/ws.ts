@@ -1,7 +1,7 @@
-export interface WsEvent<T = Record<string, unknown>> {
+export interface WsEvent {
   id: string
   type: string
-  data: T
+  data?: string
 }
 
 export interface WsSendPayload {
@@ -10,12 +10,12 @@ export interface WsSendPayload {
   /** Tipo do evento (ex: "notification", "message", "update") */
   type: string
   /** Dados do evento */
-  data: Record<string, unknown>
+  data?: string
 }
 
 export interface WsBroadcastPayload {
   type: string
-  data: Record<string, unknown>
+  data?: string
 }
 
 export interface JwtPayload {

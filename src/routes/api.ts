@@ -29,7 +29,7 @@ export async function apiRoutes(app: FastifyInstance) {
       return reply.code(400).send({ error: "userId and type are required" })
     }
 
-    const sent = sendToUser(userId, type, data ?? {})
+    const sent = sendToUser(userId, type, data)
     return { sent, userId, type }
   })
 

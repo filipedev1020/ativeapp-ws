@@ -22,15 +22,15 @@ export function removeClient(userId: string, socket: WebSocket) {
   console.log(`[ws] disconnected: ${userId} (${sockets?.size ?? 0} remaining)`)
 }
 
-export function sendToUser<T = Record<string, unknown>>(
+export function sendToUser(
   userId: string,
   type: string,
-  data: T
+  data?: string
 ): boolean {
   const sockets = clients.get(userId)
   if (!sockets || sockets.size === 0) return false
 
-  const event: WsEvent<T> = { id: userId, type, data }
+  const event: WsEvent = { id: userId, type, data }
   const payload = JSON.stringify(event)
 
   for (const socket of sockets) {
