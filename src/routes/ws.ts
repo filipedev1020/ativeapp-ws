@@ -3,10 +3,9 @@ import { addClient, removeClient } from "../services/connections.js"
 import type { JwtPayload } from "../types/ws.js"
 
 export async function wsRoute(app: FastifyInstance) {
-  app.get("/ws", { websocket: true }, (socket, req) => {
+  app.get("/ws", { websocket: true }, async (socket, req) => {
     const token =
-      (req.query as Record<string, string>).token ??
-      req.headers.authorization?.replace("Bearer ", "")
+      (req.query as Record<string, string>).token 
 
     if (!token) {
       socket.send(JSON.stringify({ type: "error", data: { message: "Token required" } }))
@@ -28,14 +27,6 @@ export async function wsRoute(app: FastifyInstance) {
     addClient(user_id, socket)
 
     socket.send(JSON.stringify({ id: user_id, type: "connected", data: { userId: user_id } }))
-
-    socket.on("message", (raw: any) => {
-      // ping/pong ou futuro: client pode mandar mensagens
-      const msg = raw.toString()
-      if (msg === "ping") {
-        socket.send("pong")
-      }
-    })
 
     socket.on("close", () => {
       removeClient(user_id, socket)
