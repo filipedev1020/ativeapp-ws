@@ -4,13 +4,17 @@ export interface WsEvent {
   data?: string
 }
 
-export interface WsSendPayload {
+export interface WsSendMessage {
   /** ID do usuário destino */
   userId: string
   /** Tipo do evento (ex: "notification", "message", "update") */
   type: string
   /** Dados do evento */
   data?: string
+}
+
+export interface WsSendPayload {
+  messages: WsSendMessage[]
 }
 
 export interface WsBroadcastPayload {

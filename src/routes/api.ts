@@ -21,16 +21,21 @@ export async function apiRoutes(app: FastifyInstance) {
     }
   })
 
-  // Envia evento para um usuário específico
+  // Envia eventos para usuários específicos
   app.post<{ Body: WsSendPayload }>("/send", async (req, reply) => {
-    const { userId, type, data } = req.body
+    const { messages } = req.body
 
-    if (!userId || !type) {
-      return reply.code(400).send({ error: "userId and type are required" })
+    if (!Array.isArray(messages)) {
+      return reply.code(400).send({ error: "messages array is required" })
     }
 
-    const sent = sendToUser(userId, type, data)
-    return { sent, userId, type }
+    for (const msg of messages) {
+      if (!msg.userId || !msg.type) continue
+
+      sendToUser(msg.userId, msg.type, msg.data)
+    }
+
+    return {}
   })
 
   // Broadcast para todos conectados
